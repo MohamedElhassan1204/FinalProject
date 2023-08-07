@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import algonquin.cst2335.finalproject.databinding.QuizPageBinding;
 
-public class QuizPage extends AppCompatActivity {
+public class QuizSelectionPage extends AppCompatActivity {
     QuizPageBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
