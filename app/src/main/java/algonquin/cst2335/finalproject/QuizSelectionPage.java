@@ -17,7 +17,6 @@ public class QuizSelectionPage extends AppCompatActivity {
         setContentView(R.layout.quiz_page);
         binding = QuizPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Button submitButton = binding.submitButton;
 
         binding.math.setOnClickListener(clk -> {
         });
@@ -37,8 +36,6 @@ public class QuizSelectionPage extends AppCompatActivity {
         binding.entGames.setOnClickListener(clk -> {
         });
 
-        submitButton.setOnClickListener(clk -> {
-        });
 
     }
 }

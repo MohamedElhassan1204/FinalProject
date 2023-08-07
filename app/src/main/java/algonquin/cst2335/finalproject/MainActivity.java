@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         Button quizButton = binding.quizButton;
 
         quizButton.setOnClickListener(clk -> {
-            Intent nextPage = new Intent( MainActivity.this, QuizPage.class);
+            Intent nextPage = new Intent( MainActivity.this, QuizSelectionPage.class);
             startActivity(nextPage);
         });
     }
