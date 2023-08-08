@@ -25,16 +25,16 @@ import java.util.Iterator;
 import java.util.Random;
 
 import algonquin.cst2335.finalproject.databinding.QuestionPageBinding;
-import algonquin.cst2335.finalproject.databinding.QuizSelectionPageBinding;
 
 public class QuestionPage extends AppCompatActivity {
 
     @NonNull QuestionPageBinding binding;
 
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.question_page);
         RequestQueue queue;
         queue = Volley.newRequestQueue(this);
-        super.onCreate(savedInstanceState);
         binding = QuestionPageBinding.inflate(getLayoutInflater());
 
         Intent fromPrevious = getIntent();
@@ -83,15 +83,12 @@ public class QuestionPage extends AppCompatActivity {
                                 throw new RuntimeException(e);
                             }
                         }
-
                         Log.w("TAG", answers.get(0).getText().toString());
                         binding.answerA.setText(answers.get(0).getText().toString());
                         binding.answerA.invalidate();
                         binding.answerA.requestLayout();
                         Log.w("TAGbutton", binding.answerA.getText().toString());
-
                     }
-
                     );
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -99,6 +96,5 @@ public class QuestionPage extends AppCompatActivity {
             },(error) -> {}
         );
         queue.add(request);
-        setContentView(R.layout.question_page);
     }
 }
