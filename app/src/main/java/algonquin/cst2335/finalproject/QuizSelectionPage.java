@@ -36,7 +36,7 @@ public class QuizSelectionPage extends AppCompatActivity {
                 else{
                     SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("questionNumber", String.valueOf(questionNumber));
+                    editor.putInt("questionNumber", questionNumber);
                     editor.apply();
 
                     Intent nextPage = new Intent( QuizSelectionPage.this, QuestionPage.class);

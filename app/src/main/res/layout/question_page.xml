@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="37dp">
+    tools:layout_editor_absoluteY="37dp"
+    tools:context=".QuizSelectionPage">
 
     <TextView
         android:id="@+id/questionText"
@@ -38,6 +39,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:text="Back"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -47,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="84dp"
-        android:text="Q#"
+        android:text="#"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +58,7 @@
         android:layout_width="175dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
-        android:text="Next Question"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

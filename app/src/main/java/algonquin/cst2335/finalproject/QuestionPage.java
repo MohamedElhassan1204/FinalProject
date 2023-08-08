@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,16 +32,13 @@ public class QuestionPage extends AppCompatActivity {
     @NonNull QuestionPageBinding binding;
 
     public void onCreate(Bundle savedInstanceState) {
+        RequestQueue queue;
+        queue = Volley.newRequestQueue(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.question_page);
         binding = QuestionPageBinding.inflate(getLayoutInflater());
 
         Intent fromPrevious = getIntent();
-        String questionNumber = fromPrevious.getStringExtra("questionNumber");
-        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("questionNumber", questionNumber);
-        editor.apply();
+        int questionNumber = fromPrevious.getIntExtra("questionNumber",0);
 
         String url = null;
         /**
@@ -46,42 +46,59 @@ public class QuestionPage extends AppCompatActivity {
          * json object URL
          */
         try {
-            url = "https://opentdb.com/api.php?amount=" + URLEncoder.encode(questionNumber,"UTF-8")
-                + "&category=22&type=multiple";
+            url = "https://opentdb.com/api.php?amount=" + URLEncoder.encode(String.valueOf(questionNumber),"UTF-8")
+                    + "&category=22&type=multiple";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+        ArrayList<Button> answers = new ArrayList<>();
+        answers.add(binding.answerA);
+        answers.add(binding.answerB);
+        answers.add(binding.answerC);
+        answers.add(binding.answerD);
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
             (response) -> {
                 try {
+                    int index = 0;
                     JSONArray triviaQuiz = response.getJSONArray("results");
-                    JSONObject questionObject = triviaQuiz.getJSONObject(0);
-                    JSONObject mainObject = response.getJSONObject("main");
-                    String question = mainObject.getString("question");
-                    String correctAnswer = mainObject.getString("correct_answer");
+                    JSONObject questionObject = triviaQuiz.getJSONObject(index);
+                    String question = questionObject.getString("question");
+                    String correctAnswer = questionObject.getString("correct_answer");
                     JSONArray incorrectAnswers = questionObject.getJSONArray("incorrect_answers");
 
-                    binding.questionText.setText(question);
+                    runOnUiThread(()-> {
+                        binding.questionText.setText(question);
+                        Log.w("TAGbutton", binding.questionText.getText().toString());
 
-                    ArrayList<Button> answers = new ArrayList<>();
-                    answers.add(binding.answerA);
-                    answers.add(binding.answerB);
-                    answers.add(binding.answerC);
-                    answers.add(binding.answerD);
+                        Random rand = new Random();
+                        int answerRandomizer = rand.nextInt(4);
+                        answers.get(answerRandomizer).setText(correctAnswer);
+                        answers.remove(answerRandomizer);
+                        for (int i = 0 ; i < 2 ; i++){
+                            try {
+                                answers.get(i).setText(incorrectAnswers.getString(i));
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
 
-                    Random rand = new Random();
-                    int answerRandomizer = rand.nextInt(4);
-                    answers.get(answerRandomizer).setText(correctAnswer);
-                    for (int i = 0 ; i > 2 ; i++){
-                        answers.get(answerRandomizer).setText(incorrectAnswers.getString(i));
+                        Log.w("TAG", answers.get(0).getText().toString());
+                        binding.answerA.setText(answers.get(0).getText().toString());
+                        binding.answerA.invalidate();
+                        binding.answerA.requestLayout();
+                        Log.w("TAGbutton", binding.answerA.getText().toString());
+
                     }
 
+                    );
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-            },(error) -> {
-
-        });
+            },(error) -> {}
+        );
+        queue.add(request);
+        setContentView(R.layout.question_page);
     }
 }
