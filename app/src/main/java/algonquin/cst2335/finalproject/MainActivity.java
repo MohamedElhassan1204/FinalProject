@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import algonquin.cst2335.finalproject.databinding.ActivityMainBinding;
-import algonquin.cst2335.finalproject.databinding.QuizPageBinding;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;

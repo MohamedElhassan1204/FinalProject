@@ -14,10 +14,6 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivityBearImage"
-            android:theme="@style/NoActionBarTheme"
-            android:exported="true"/>
-        <activity
             android:name=".QuizSelectionPage"
             android:exported="true"/>
         <activity
@@ -28,8 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
     </application>
 
