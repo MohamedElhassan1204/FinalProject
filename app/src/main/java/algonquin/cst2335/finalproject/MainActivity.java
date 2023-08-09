@@ -11,7 +11,6 @@ import algonquin.cst2335.finalproject.databinding.ActivityMainBinding;
 import algonquin.cst2335.finalproject.databinding.QuizPageBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +20,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Button quizButton = binding.quizButton;
+        Button bearImageButton = binding.bearImageButton;
 
         quizButton.setOnClickListener(clk -> {
             Intent nextPage = new Intent( MainActivity.this, QuizSelectionPage.class);
             startActivity(nextPage);
         });
+        // Set the onClickListener for the Bear Image button
+        bearImageButton.setOnClickListener(clk -> {
+            Intent bearImageIntent = new Intent(MainActivity.this, MainActivityBearImage.class);
+            startActivity(bearImageIntent);
+        });
     }
+
 }

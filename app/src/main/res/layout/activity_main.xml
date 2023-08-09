@@ -7,6 +7,17 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/bearImageButton"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
+        android:text="Bear Image Generator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/quizButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/quizButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,4 +26,6 @@
         android:text="Quiz"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
