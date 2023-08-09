@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="aviation_app">Aviation Stack Flight Tracker</string>
+    <string name="ask_code">Airport Code: </string>
+    <string name="searchFlight">Search</string>
+    <string name="viewSavedFlights">My Flights</string>
 </resources>
