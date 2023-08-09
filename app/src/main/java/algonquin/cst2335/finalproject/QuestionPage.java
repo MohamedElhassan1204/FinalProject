@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ import algonquin.cst2335.finalproject.databinding.QuestionPageBinding;
 public class QuestionPage extends AppCompatActivity {
 
     @NonNull QuestionPageBinding binding;
-
+    int index = 0;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_page);
@@ -61,40 +62,34 @@ public class QuestionPage extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
             (response) -> {
                 try {
-                    int index = 0;
                     JSONArray triviaQuiz = response.getJSONArray("results");
                     JSONObject questionObject = triviaQuiz.getJSONObject(index);
                     String question = questionObject.getString("question");
                     String correctAnswer = questionObject.getString("correct_answer");
                     JSONArray incorrectAnswers = questionObject.getJSONArray("incorrect_answers");
-
-                    runOnUiThread(()-> {
-                        binding.questionText.setText(question);
-                        Log.w("TAGbutton", binding.questionText.getText().toString());
-
-                        Random rand = new Random();
-                        int answerRandomizer = rand.nextInt(4);
-                        answers.get(answerRandomizer).setText(correctAnswer);
-                        answers.remove(answerRandomizer);
-                        for (int i = 0 ; i < 2 ; i++){
-                            try {
-                                answers.get(i).setText(incorrectAnswers.getString(i));
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
+                    runOnUiThread(()->{
+                    binding.questionText.setText(question);
+                    Random rand = new Random();
+                    int answerRandomizer = rand.nextInt(4);
+                    answers.get(answerRandomizer).setText(correctAnswer);
+                    answers.remove(answerRandomizer);
+                    for (int i = 0 ; i < 2 ; i++){
+                        try {
+                            answers.get(i).setText(incorrectAnswers.getString(i));
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
                         }
-                        Log.w("TAG", answers.get(0).getText().toString());
-                        binding.answerA.setText(answers.get(0).getText().toString());
-                        binding.answerA.invalidate();
-                        binding.answerA.requestLayout();
-                        Log.w("TAGbutton", binding.answerA.getText().toString());
                     }
-                    );
+                    Log.w("TAG", answers.get(0).getText().toString());
+                    });
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             },(error) -> {}
         );
         queue.add(request);
+        String finalUrl = url;
+
     }
+
 }
