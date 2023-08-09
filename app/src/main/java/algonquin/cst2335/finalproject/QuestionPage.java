@@ -68,6 +68,7 @@ public class QuestionPage extends AppCompatActivity {
                     String correctAnswer = questionObject.getString("correct_answer");
                     JSONArray incorrectAnswers = questionObject.getJSONArray("incorrect_answers");
                     runOnUiThread(()->{
+                    index++;
                     binding.questionText.setText(question);
                     Random rand = new Random();
                     int answerRandomizer = rand.nextInt(4);
@@ -88,8 +89,11 @@ public class QuestionPage extends AppCompatActivity {
             },(error) -> {}
         );
         queue.add(request);
-        String finalUrl = url;
+        binding.nextQuestionButton.setOnClickListener(click->{
+            index++;
+            binding.backButton.setVisibility(View.VISIBLE);
 
+        });
     }
 
 }
