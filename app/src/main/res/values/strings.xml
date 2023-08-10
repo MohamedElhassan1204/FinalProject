@@ -5,4 +5,10 @@
     <string name="searchFlight">Search</string>
     <string name="viewSavedFlights">My Flights</string>
     <string name="code_entered">Code</string>
+    <string name="flightNumLabel">Flight Number: </string>
+    <string name="destinationLabel">To: </string>
+    <string name="terminalLabel">Terminal:</string>
+    <string name="gateID">Gate: </string>
+    <string name="delayID">Delay: </string>
+    <string name="saveFlightButton">Save Flight</string>
 </resources>

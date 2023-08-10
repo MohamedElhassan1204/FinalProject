@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public class FlightViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Flight>> flights = new MutableLiveData<>();
     public MutableLiveData<Flight> selectedFlight = new MutableLiveData<>();
+
 }
