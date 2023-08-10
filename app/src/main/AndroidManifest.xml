@@ -45,6 +45,9 @@
             android:exported="true"/>
 
         <activity
+            android:name=".SubmissionPage"
+            android:exported="true"/>
+        <activity
             android:name=".QuizSelectionPage"
             android:exported="true"/>
         <activity

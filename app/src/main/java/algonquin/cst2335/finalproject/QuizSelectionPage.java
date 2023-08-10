@@ -26,7 +26,7 @@ public class QuizSelectionPage extends AppCompatActivity {
     RecyclerView recyclerView;
     Adapter adapter;
     ArrayList<String> items;
-    ArrayList<Drawable>itemImages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,38 +35,34 @@ public class QuizSelectionPage extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         items = new ArrayList<>();
-        items.add(0,"Math");
-        items.add(1,"Geography");
-        items.add(2,"Science & Nature");
-        items.add(3,"Entertainment:Music");
-        items.add(4,"Entertainment:Television");
-        items.add(5,"Entertainment:Games");
+        items.add("Math");
+        items.add("Geography");
+        items.add("Science & Nature");
+        items.add("Entertainment:Music");
+        items.add("Entertainment:Television");
+        items.add("Entertainment:Games");
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this,items);
+        adapter = new Adapter(this, items); // Pass 0 as the initial score
         recyclerView.setAdapter(adapter);
 
         binding.startTest.setOnClickListener(click -> {
-            if(!binding.questionNumber.getText().toString().isEmpty()){
-
+            if (!binding.questionNumber.getText().toString().isEmpty()) {
                 int questionNumber = Integer.parseInt(binding.questionNumber.getText().toString());
                 String url = null;
-
-                if(questionNumber > 50 || questionNumber == 0) {
-                    Toast.makeText(this, "cannot select over 50 questions:", Toast.LENGTH_LONG).show();
-                }
-                else{
+                if (questionNumber > 50 || questionNumber == 0) {
+                    Toast.makeText(this, "Cannot select over 50 questions.", Toast.LENGTH_LONG).show();
+                } else {
                     SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putInt("questionNumber", questionNumber);
                     editor.apply();
 
-                    Intent nextPage = new Intent( QuizSelectionPage.this, QuestionPage.class);
-                    nextPage.putExtra("questionNumber",questionNumber);
+                    Intent nextPage = new Intent(QuizSelectionPage.this, QuestionPage.class);
+                    nextPage.putExtra("questionNumber", questionNumber);
 
                     startActivity(nextPage);
-                    Log.w( "MainActivity", "In onCreate() - Loading Widgets" );
-                    //binding..setOnClickListener(click -> {});
+                    Log.w("QuizSelectionPage", "Starting QuestionPage");
                 }
             }
         });
