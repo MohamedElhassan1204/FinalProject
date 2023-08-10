@@ -33,10 +33,11 @@ public class QuestionPage extends AppCompatActivity {
     int index = 0;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.question_page);
         RequestQueue queue;
         queue = Volley.newRequestQueue(this);
+
         binding = QuestionPageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Intent fromPrevious = getIntent();
         int questionNumber = fromPrevious.getIntExtra("questionNumber",0);
