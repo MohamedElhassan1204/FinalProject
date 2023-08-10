@@ -12,4 +12,14 @@
     <string name="delayID">Delay: </string>
     <string name="saveFlightButton">Save Flight</string>
     <string name="deleteFlightButton">Delete Flight</string>
+    <string name="action_help">Help</string>
+    <string name="help_title">Help</string>
+    <string name="help_message">Enter the desired image size and press the generate button to fetch a bear image. You can save or delete the image using the provided options.</string>
+    <string name="ok">OK</string>
+    <string name="hint_enter_size">Enter Image Size</string>
+    <string name="button_generate">Generate</string>
+    <string name="delete">Delete</string>
+    <string name="button_save">save</string>
+
+master
 </resources>
