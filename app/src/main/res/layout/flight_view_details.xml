@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C5BCBC">
+
+    <fragment
+        android:id="@+id/fragmentContainerView"
+        android:layout_width="395dp"
+        android:layout_height="290dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="44dp"
+        android:background="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/planeImg"
+        android:layout_width="151dp"
+        android:layout_height="157dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/fragmentContainerView"
+        app:layout_constraintTop_toTopOf="@+id/fragmentContainerView"
+        app:srcCompat="@drawable/plane" />
+
+    <TextView
+        android:id="@+id/terminalID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/terminalLabel"
+        app:layout_constraintStart_toStartOf="@+id/fragmentContainerView"
+        app:layout_constraintTop_toBottomOf="@+id/planeImg" />
+
+    <TextView
+        android:id="@+id/terminalContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="28dp"
+        android:text="terminal here"
+        app:layout_constraintStart_toEndOf="@+id/terminalID"
+        app:layout_constraintTop_toBottomOf="@+id/planeImg" />
+
+    <TextView
+        android:id="@+id/gateID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/gateID"
+        app:layout_constraintStart_toStartOf="@+id/fragmentContainerView"
+        app:layout_constraintTop_toBottomOf="@+id/terminalID" />
+
+    <TextView
+        android:id="@+id/gateContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="12dp"
+        android:text="gate here"
+        app:layout_constraintStart_toEndOf="@+id/gateID"
+        app:layout_constraintTop_toBottomOf="@+id/terminalContent" />
+
+    <TextView
+        android:id="@+id/delayID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/delayID"
+        app:layout_constraintStart_toEndOf="@+id/terminalContent"
+        app:layout_constraintTop_toBottomOf="@+id/deleteFlightButton" />
+
+    <TextView
+        android:id="@+id/delayContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="32dp"
+        android:text="delay here"
+        app:layout_constraintStart_toEndOf="@+id/delayID"
+        app:layout_constraintTop_toBottomOf="@+id/deleteFlightButton" />
+
+    <Button
+        android:id="@+id/saveFlightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/saveFlightButton"
+        app:layout_constraintStart_toEndOf="@+id/planeImg"
+        app:layout_constraintTop_toTopOf="@+id/fragmentContainerView" />
+
+    <Button
+        android:id="@+id/deleteFlightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/deleteFlightButton"
+        app:layout_constraintStart_toEndOf="@+id/planeImg"
+        app:layout_constraintTop_toBottomOf="@+id/saveFlightButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

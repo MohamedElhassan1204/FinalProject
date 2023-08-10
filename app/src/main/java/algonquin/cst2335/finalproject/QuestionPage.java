@@ -45,6 +45,7 @@ public class QuestionPage extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = QuestionPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -61,6 +62,13 @@ public class QuestionPage extends AppCompatActivity {
         binding.submitButton.setOnClickListener(this::submitAnswers);
         setAnswerButtonListeners();
     }
+
+        RequestQueue queue;
+        queue = Volley.newRequestQueue(this);
+
+        binding = QuestionPageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
     private void loadQuestionData() {
         queue = Volley.newRequestQueue(this);
