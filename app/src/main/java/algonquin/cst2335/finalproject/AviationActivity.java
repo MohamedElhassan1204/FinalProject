@@ -13,7 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-
+import algonquin.cst2335.finalproject.FlightFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +21,8 @@ import android.content.SharedPreferences;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 import algonquin.cst2335.finalproject.databinding.AviationSfTrackerBinding;
-
 
 public class AviationActivity extends AppCompatActivity {
 
@@ -88,7 +86,15 @@ public class AviationActivity extends AppCompatActivity {
                                     Flight flight = new Flight(flightCode, destination, terminal, gate, delay);
                                     flightsList.add(flight);
                                 }
-                                myAdapter = new FlightAdapter(this, flightsList);
+                                myAdapter = new FlightAdapter(this, flightsList, flight -> {
+                                    FlightFragment flightFragment = FlightFragment.newInstance(flight);
+
+                                    getSupportFragmentManager().beginTransaction()
+                                            .add(R.id.flight_view_details, flightFragment)
+                                            .addToBackStack(null)
+                                            .commit();
+                                });
+
                                 myAdapter.notifyDataSetChanged();
                                 binding.flightList.setAdapter(myAdapter);
                             } catch (JSONException e) {
@@ -108,34 +114,16 @@ public class AviationActivity extends AppCompatActivity {
             builder.setTitle("Aviation Tracker: How-to-use");
             builder.setMessage(
                     "- Enter an airport code and search.\n" +
-                            "- Scroll to view all available flights for the specified airport.\n" +
-                            "- Click on a flight to view more details (Terminal, Gate, & Delay).\n" +
-                            "- Add a flight to 'My Flights' to save it.\n" +
-                            "- Open 'My Flights' to view all your saved flights or unsave a flight.\n"
+                    "- Scroll to view all available flights for the specified airport.\n" +
+                    "- Click on a flight to view more details (Terminal, Gate, & Delay).\n" +
+                    "- Add a flight to 'My Flights' to save it.\n" +
+                    "- Open 'My Flights' to view all your saved flights or unsave a flight.\n"
             );
             AlertDialog dialog = builder.create();
             dialog.show();
         });
 
         binding.viewSavedFlights.setOnClickListener(click -> {
-//            SavedFlightsFragment savedFlightsFragment = new SavedFlightsFragment();
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragmentContainerView, savedFlightsFragment)
-//                    .addToBackStack(null)
-//                    .commit();
         });
-
-//        deleteButton.setOnClickListener(v -> {
-//            Flight selectedFlight = savedFlightList.get(getAdapterPosition());
-//            FlightDatabase db = Room.databaseBuilder(getContext(), FlightDatabase.class, "flightsDB").build();
-//            FlightDAO flightDAO = db.fDAO();
-//            new Thread(() -> {
-//                flightDAO.deleteFlight(selectedFlight);
-//                getActivity().runOnUiThread(() -> {
-//                    // Refresh the list or notify the adapter of item removed
-//                    Toast.makeText(getContext(), "Flight deleted!", Toast.LENGTH_SHORT).show();
-//                });
-//            }).start();
-//        });
     }
 }

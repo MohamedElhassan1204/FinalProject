@@ -11,4 +11,5 @@
     <string name="gateID">Gate: </string>
     <string name="delayID">Delay: </string>
     <string name="saveFlightButton">Save Flight</string>
+    <string name="deleteFlightButton">Delete Flight</string>
 </resources>

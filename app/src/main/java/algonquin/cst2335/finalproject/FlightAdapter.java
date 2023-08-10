@@ -15,9 +15,16 @@ import java.util.List;
 public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightViewHolder> {
     private List<Flight> flightList;
     private Context context;
-    public FlightAdapter(Context context, List<Flight> flightList) {
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Flight flight);
+    }
+
+    public FlightAdapter(Context context, List<Flight> flightList, OnItemClickListener listener) {
         this.context = context;
         this.flightList = flightList;
+        this.listener = listener;
     }
     @NonNull
     @Override
@@ -48,8 +55,13 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
             destinationAirportValue = itemView.findViewById(R.id.destinationAirportValue);
             flightNumberLabel = itemView.findViewById(R.id.flightNumberLabel);
             flightNumber = itemView.findViewById(R.id.flightNumber);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(flightList.get(getAdapterPosition()));
+                }
+            });
         }
     }
-
-
 }
