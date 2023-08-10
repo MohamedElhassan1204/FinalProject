@@ -34,11 +34,11 @@
         app:layout_constraintTop_toBottomOf="@+id/questionText" />
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/submitButton"
         android:layout_width="175dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:text="Back"
+        android:text="Submit"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

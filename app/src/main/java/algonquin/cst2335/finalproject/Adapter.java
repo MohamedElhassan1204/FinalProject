@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,25 +66,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-
-            if (categoryLabel.getText().equals("Math")) {
-
-            }
-            else if (categoryLabel.getText().equals("Geography")){
-
-            }
-            else if (categoryLabel.getText().equals("Science & Nature")){
-
-            }
-            else if (categoryLabel.getText().equals("Entertainment:Music")){
-
-            }
-            else if (categoryLabel.getText().equals("Entertainment:Television")){
-
-            }
-            else if (categoryLabel.getText().equals("Entertainment:Games")){
-
-            }
         }
 
     }
