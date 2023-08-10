@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private List<String> data;
+    private List<String> items;
 
     public Adapter(Context context , List<String> data) {
     this.layoutInflater = LayoutInflater.from(context) ;
@@ -47,7 +49,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             default:
         }
         holder.categoryLabel.setText(title);
-
     }
 
     @Override
@@ -55,17 +56,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView categoryLabel;
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView categoryLabel,nameText,score;
         ImageView categoryImage;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryLabel = itemView.findViewById(R.id.categoryLabel);
+            nameText = itemView.findViewById(R.id.nameText);
+            score = itemView.findViewById(R.id.score);
             categoryImage = itemView.findViewById(R.id.categoryImage);
-        }
-
-        @Override
-        public void onClick(View v) {
         }
 
     }

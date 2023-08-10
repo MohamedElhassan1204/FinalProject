@@ -23,12 +23,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="First name"
-        app:layout_constraintEnd_toStartOf="@+id/scoreText"
+        app:layout_constraintEnd_toStartOf="@+id/score"
         app:layout_constraintStart_toEndOf="@+id/rank"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/scoreText"
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -1,9 +1,13 @@
 package algonquin.cst2335.finalproject;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +35,9 @@ public class QuestionPage extends AppCompatActivity {
     int score = 0;
     ArrayList<Button> answers = new ArrayList<>();
     RequestQueue queue;
-    int questionNumber; // Added declaration
+    int questionNumber;
+    String correctAnswer;
+    boolean isSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,6 @@ public class QuestionPage extends AppCompatActivity {
 
     private void loadQuestionData() {
         queue = Volley.newRequestQueue(this);
-
         Intent fromPrevious = getIntent();
         int questionNumber = fromPrevious.getIntExtra("questionNumber", 0);
 
@@ -81,14 +86,15 @@ public class QuestionPage extends AppCompatActivity {
         queue.add(request);
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadQuestionData(JSONArray triviaQuiz) throws JSONException {
         JSONObject questionObject = triviaQuiz.getJSONObject(index);
         String question = questionObject.getString("question");
-        String correctAnswer = questionObject.getString("correct_answer");
+        correctAnswer = questionObject.getString("correct_answer");
         JSONArray incorrectAnswers = questionObject.getJSONArray("incorrect_answers");
         runOnUiThread(() -> {
             binding.questionText.setText(question);
-            binding.questionNumber.setText(index + ":");
+            binding.questionNumber.setText((index + 1) + ":");
             Random rand = new Random();
             int answerRandomizer = rand.nextInt(4);
             answers.get(answerRandomizer).setText(correctAnswer);
@@ -107,19 +113,32 @@ public class QuestionPage extends AppCompatActivity {
         for (Button answer : answers) {
             answer.setOnClickListener(view -> {
                 for (Button btn : answers) {
+                    isSelected = true;
                     btn.setBackgroundColor(getColor(R.color.purple_500));
                 }
                 view.setBackgroundColor(getColor(R.color.teal_200));
-                checkAnswer(answer.getText().toString()); // Corrected line
+                checkAnswer(answer.getText().toString());
             });
         }
     }
 
+    private void resetButton(){
+        for (Button btn : answers) {
+            btn.setBackgroundColor(getColor(R.color.purple_500));
+        }
+    }
+
     private void checkAnswer(String selectedAnswer) {
-        // Implement your answer checking logic here
+        if (selectedAnswer.equals(correctAnswer)) {
+            // Correct answer logic
+            score++; // Update the score or perform other actions for correct answer
+        } else {
+            // Incorrect answer logic
+        }
     }
 
     private void loadNextQuestion(View view) {
+        isSelected = false;
         index++;
         int questionNumber = getIntent().getIntExtra("questionNumber", 0);
         if (index < questionNumber) {
@@ -130,11 +149,17 @@ public class QuestionPage extends AppCompatActivity {
                 binding.nextQuestionButton.setVisibility(View.INVISIBLE);
             }
         }
+        resetButton();
     }
-
 
     private void submitAnswers(View view) {
         Intent nextPage = new Intent(QuestionPage.this, SubmissionPage.class);
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("questionNumber", questionNumber);
+        editor.putInt("score",score);
+        editor.apply();
+        nextPage.putExtra("score",score);
         startActivity(nextPage);
     }
 }
