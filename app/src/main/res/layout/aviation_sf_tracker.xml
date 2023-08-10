@@ -30,6 +30,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:hint="@string/code_entered"
         app:layout_constraintEnd_toStartOf="@+id/searchFlight"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ask_code"
@@ -58,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@+id/aviation_app" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

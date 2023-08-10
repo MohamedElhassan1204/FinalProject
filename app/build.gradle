@@ -36,11 +36,10 @@ android {
         dataBinding = true
         viewBinding = true
     }
-
 }
 
 dependencies {
-
+    implementation 'androidx.fragment:fragment:latest_version'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'androidx.room:room-runtime:2.5.2'
     annotationProcessor 'androidx.room:room-compiler:2.5.2'

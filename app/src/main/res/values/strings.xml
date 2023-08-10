@@ -4,4 +4,5 @@
     <string name="ask_code">Airport Code: </string>
     <string name="searchFlight">Search</string>
     <string name="viewSavedFlights">My Flights</string>
+    <string name="code_entered">Code</string>
 </resources>
