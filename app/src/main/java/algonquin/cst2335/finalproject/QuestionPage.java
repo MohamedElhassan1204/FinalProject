@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,6 +40,7 @@ public class QuestionPage extends AppCompatActivity {
     int questionNumber;
     String correctAnswer;
     boolean isSelected;
+    private Button selectedButton = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class QuestionPage extends AppCompatActivity {
         binding = QuestionPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        initializeUIElements();
+
         loadQuestionData();
     }
 
@@ -84,25 +87,37 @@ public class QuestionPage extends AppCompatActivity {
         });
 
         queue.add(request);
+
+    }
+
+    private String formatHtml(String JsonText){
+        JsonText = HtmlCompat.fromHtml(JsonText,HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
+        return JsonText;
     }
 
     @SuppressLint("SetTextI18n")
     private void loadQuestionData(JSONArray triviaQuiz) throws JSONException {
+        initializeUIElements();
+        answers.clear(); // Clear the previous answers
+        answers.add(binding.answerA);
+        answers.add(binding.answerB);
+        answers.add(binding.answerC);
+        answers.add(binding.answerD);
         JSONObject questionObject = triviaQuiz.getJSONObject(index);
         String question = questionObject.getString("question");
         correctAnswer = questionObject.getString("correct_answer");
         JSONArray incorrectAnswers = questionObject.getJSONArray("incorrect_answers");
         runOnUiThread(() -> {
-            binding.questionText.setText(question);
+            binding.questionText.setText(formatHtml(question));
             binding.questionNumber.setText((index + 1) + ":");
             Random rand = new Random();
             int answerRandomizer = rand.nextInt(4);
-            answers.get(answerRandomizer).setText(correctAnswer);
+            answers.get(answerRandomizer).setText(formatHtml(correctAnswer));
             answers.remove(answerRandomizer);
             try {
-                answers.get(0).setText(incorrectAnswers.getString(0));
-                answers.get(1).setText(incorrectAnswers.getString(1));
-                answers.get(2).setText(incorrectAnswers.getString(2));
+                answers.get(0).setText(formatHtml(incorrectAnswers.getString(0)));
+                answers.get(1).setText(formatHtml(incorrectAnswers.getString(1)));
+                answers.get(2).setText(formatHtml(incorrectAnswers.getString(2)));
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -111,16 +126,18 @@ public class QuestionPage extends AppCompatActivity {
 
     private void setAnswerButtonListeners() {
         for (Button answer : answers) {
-            answer.setOnClickListener(view -> {
-                for (Button btn : answers) {
-                    isSelected = true;
-                    btn.setBackgroundColor(getColor(R.color.purple_500));
+            answer.setOnClickListener(click -> {
+                if (selectedButton != null) {
+                    selectedButton.setBackgroundColor(getColor(R.color.purple_500));
                 }
-                view.setBackgroundColor(getColor(R.color.teal_200));
+                answer.setBackgroundColor(getColor(R.color.teal_200));
+                selectedButton = answer;
                 checkAnswer(answer.getText().toString());
             });
         }
     }
+
+
 
     private void resetButton(){
         for (Button btn : answers) {
@@ -130,14 +147,13 @@ public class QuestionPage extends AppCompatActivity {
 
     private void checkAnswer(String selectedAnswer) {
         if (selectedAnswer.equals(correctAnswer)) {
-            // Correct answer logic
-            score++; // Update the score or perform other actions for correct answer
+            score++;
         } else {
-            // Incorrect answer logic
         }
     }
 
     private void loadNextQuestion(View view) {
+        initializeUIElements();
         isSelected = false;
         index++;
         int questionNumber = getIntent().getIntExtra("questionNumber", 0);
