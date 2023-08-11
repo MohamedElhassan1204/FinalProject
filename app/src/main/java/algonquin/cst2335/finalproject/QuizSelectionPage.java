@@ -2,6 +2,8 @@ package algonquin.cst2335.finalproject;
 
 import static java.lang.Integer.parseInt;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,14 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -72,4 +78,28 @@ public class QuizSelectionPage extends AppCompatActivity {
             }
         });
     }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.Help) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Instructions");
+            builder.setMessage(R.string.helpmessage);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (item.getItemId() == R.id.Home) {
+            Intent HomeIntent = new Intent(QuizSelectionPage.this, MainActivity.class);
+            startActivity(HomeIntent );
+        } else if (item.getItemId() == R.id.Delete) {
+            Snackbar.make(binding.getRoot(),"Item Deleted",Snackbar.LENGTH_SHORT).show();
+        }
+        return true;
+    }
 }
+

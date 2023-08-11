@@ -1,6 +1,5 @@
 package algonquin.cst2335.finalproject;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,6 +30,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Random;
 
+import algonquin.cst2335.finalproject.MainActivity;
+import algonquin.cst2335.finalproject.R;
+import algonquin.cst2335.finalproject.SubmissionPage;
 import algonquin.cst2335.finalproject.databinding.QuestionPageBinding;
 
 public class QuestionPage extends AppCompatActivity {
@@ -104,7 +105,6 @@ public class QuestionPage extends AppCompatActivity {
         return JsonText;
     }
 
-    @SuppressLint("SetTextI18n")
     private void loadQuestionData(JSONArray triviaQuiz) throws JSONException {
         initializeUIElements();
         answers.clear(); // Clear the previous answers
@@ -146,7 +146,6 @@ public class QuestionPage extends AppCompatActivity {
         }
     }
 
-
     private void resetButton() {
         for (Button btn : answers) {
             btn.setBackgroundColor(getColor(R.color.purple_500));
@@ -156,7 +155,6 @@ public class QuestionPage extends AppCompatActivity {
     private void checkAnswer(String selectedAnswer) {
         if (selectedAnswer.equals(correctAnswer)) {
             score++;
-        } else {
         }
     }
 
@@ -176,13 +174,34 @@ public class QuestionPage extends AppCompatActivity {
         resetButton();
     }
 
+    private int calculateScore() {
+        int calculatedScore = 0;
+
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getText().toString().equals(correctAnswer)) {
+                calculatedScore++;
+            }
+        }
+        return calculatedScore;
+    }
+
+    private void saveScore(int calculatedScore) {
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("score", calculatedScore);
+        editor.apply();
+    }
+
     private void submitAnswers(View view) {
         Intent nextPage = new Intent(QuestionPage.this, SubmissionPage.class);
         SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("questionNumber", questionNumber);
-        editor.putInt("score", score);
         editor.apply();
+
+        int calculatedScore = calculateScore();
+        saveScore(calculatedScore);
+
         nextPage.putExtra("score", score);
         startActivity(nextPage);
     }
@@ -204,10 +223,9 @@ public class QuestionPage extends AppCompatActivity {
             dialog.show();
         } else if (item.getItemId() == R.id.Home) {
             Intent HomeIntent = new Intent(QuestionPage.this, MainActivity.class);
-            startActivity(HomeIntent );
+            startActivity(HomeIntent);
         } else if (item.getItemId() == R.id.Delete) {
-            Snackbar.make(binding.getRoot(),"Item Deleted",Snackbar.LENGTH_SHORT).show();
-
+            Snackbar.make(binding.getRoot(), "Item Deleted", Snackbar.LENGTH_SHORT).show();
         }
         return true;
     }
