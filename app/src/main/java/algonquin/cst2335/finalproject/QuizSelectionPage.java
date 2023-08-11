@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +28,10 @@ public class QuizSelectionPage extends AppCompatActivity {
     Adapter adapter;
     ArrayList<String> items;
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
