@@ -42,4 +42,3 @@ public class FlightFragment extends Fragment {
 
         return view;
     }
-}

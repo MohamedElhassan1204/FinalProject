@@ -75,4 +75,3 @@ public class Flight {
         this.delay = delay;
     }
 
-}
