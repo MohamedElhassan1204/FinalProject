@@ -1,11 +1,15 @@
 package algonquin.cst2335.finalproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,8 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
+import algonquin.cst2335.finalproject.databinding.ActivityMainBearImageGeneratorBinding;
 import algonquin.cst2335.finalproject.databinding.SubmissionPageBinding;
 
 public class SubmissionPage extends AppCompatActivity {
@@ -23,7 +30,7 @@ public class SubmissionPage extends AppCompatActivity {
     int score;
     int totalScore;
     RecyclerView recyclerView;
-    ScoreAdapter scoreAdapter; // Use the ScoreAdapter here
+    ScoreAdapter scoreAdapter;
     boolean hasSubmitted = false;
     ArrayList<String> contestant;
     int scoreToPass ;
@@ -32,6 +39,12 @@ public class SubmissionPage extends AppCompatActivity {
     ArrayList<QuizContestant> quizContestant;
     QuizContestant contestantObj;
     QuizContestantDAO contestantDAO;
+    SubmissionPageBinding binding;
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,42 +58,62 @@ public class SubmissionPage extends AppCompatActivity {
         contestant = new ArrayList<>();
         recyclerView = binding.recyclerScoreView;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        scoreAdapter = new ScoreAdapter(this, contestant, scoreToPass); // Use ScoreAdapter
-        recyclerView.setAdapter(scoreAdapter); // Set the scoreAdapter
+        scoreAdapter = new ScoreAdapter(this, contestant, scoreToPass);
+        recyclerView.setAdapter(scoreAdapter);
 
         QuestionDatabase db = Room.databaseBuilder(getApplicationContext(), QuestionDatabase.class, "database-name").build();
         qDAO = db.qcDAO();
 
         binding.scoreButton.setOnClickListener(view -> {
 
-            // Create a QuizContestant object and set its attributes
             String name = binding.nameText.getText().toString();
-            String contestantScore = String.valueOf(scoreToPass); // You need to set the score here based on your logic
+            String contestantScore = String.valueOf(scoreToPass);
 
             if (!name.isEmpty()) {
+                if (!isContestantAlreadyAdded(name)) {
+                    contestant.add(name);
+                    hasSubmitted = true;
 
-
-                // Pass the contestant object to the ContestantDetailsFragment
-
-
-                contestant.add(name);
-                contestant.add(String.valueOf(score));
-                hasSubmitted = true;
+                    // Update the RecyclerView's data
+                } else {
+                    Toast.makeText(this, "Contestant is already added.", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "Please enter a name before submitting.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-//        private void calculateScore() {
-//            Intent fromPrevious = getIntent();
-//            questionNumber = fromPrevious.getIntExtra("questionNumber", 0);
-//            score = fromPrevious.getIntExtra("score", 0);
-//            if (score == 0) {
-//                totalScore = 0;
-//            } else {
-//                totalScore = score / questionNumber;
-//            }
-//            scoreToPass = totalScore; // Assign the calculated totalScore to scoreToPass
-//        }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.Help) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Instructions");
+            builder.setMessage(R.string.helpmessage);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (item.getItemId() == R.id.Home) {
+            Intent HomeIntent = new Intent(SubmissionPage.this, MainActivity.class);
+            startActivity(HomeIntent );
+        } else if (item.getItemId() == R.id.Delete) {
+            Snackbar.make(binding.recyclerScoreView,"Item Deleted",Snackbar.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    private boolean isContestantAlreadyAdded(String name) {
+        for (String contestantName : contestant) {
+            if (contestantName.equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

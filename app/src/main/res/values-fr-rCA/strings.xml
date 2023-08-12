@@ -9,4 +9,10 @@
     <string name="button_generate">Generar</string>
     <string name="delete">Supprimer</string>
     <string name="button_save">sauvegarder</string>
+    <string name="scoreboard">Tableau de bord</string>
+    <string name="home">maison</string>
+    <string name="help">aide</string>
+    <string name="helpmessage">Sélectionnez l\'une des 4 options, la case en surbrillance est la réponse sélectionnée, vous pouvez cliquer sur la réponse suivante pour passer à la question suivante, ou soumettre le quiz après avoir répondu à la première question</string>
+
+
 </resources>

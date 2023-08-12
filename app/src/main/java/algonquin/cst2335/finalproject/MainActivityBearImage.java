@@ -6,6 +6,7 @@ import static algonquin.cst2335.finalproject.ImageDatabaseHelper.COLUMN_IMAGE;
 import static algonquin.cst2335.finalproject.ImageDatabaseHelper.COLUMN_WIDTH;
 import static algonquin.cst2335.finalproject.ImageDatabaseHelper.TABLE_NAME;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -193,6 +194,7 @@ public class MainActivityBearImage extends AppCompatActivity {
         db.close();
     }
 
+    @SuppressLint("Range")
     private List<ImageEntry> fetchImagesFromDatabase() {
         List<ImageEntry> images = new ArrayList<>();
         ImageDatabaseHelper dbHelper = new ImageDatabaseHelper(this);

@@ -12,12 +12,11 @@ public class QuizContestant {
     @ColumnInfo(name = "score")
     public String score;
     @ColumnInfo(name = "name")
-    public String name;
+    public int name;
 
     public QuizContestant() {}
 
-    public QuizContestant(int id, String score, String name) {
-        this.id = id;
+    public QuizContestant(String score, int name) {
         this.score = score;
         this.name = name;
     }
@@ -38,11 +37,11 @@ public class QuizContestant {
         this.score = score;
     }
 
-    public String getName() {
+    public int getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(int name) {
         this.name = name;
     }
 }

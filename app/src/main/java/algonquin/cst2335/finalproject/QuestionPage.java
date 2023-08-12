@@ -1,16 +1,18 @@
 package algonquin.cst2335.finalproject;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
@@ -18,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +30,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Random;
 
+import algonquin.cst2335.finalproject.MainActivity;
+import algonquin.cst2335.finalproject.R;
+import algonquin.cst2335.finalproject.SubmissionPage;
 import algonquin.cst2335.finalproject.databinding.QuestionPageBinding;
 
 public class QuestionPage extends AppCompatActivity {
@@ -36,11 +42,11 @@ public class QuestionPage extends AppCompatActivity {
     int index = 0;
     int score = 0;
     ArrayList<Button> answers = new ArrayList<>();
-    RequestQueue queue;
     int questionNumber;
     String correctAnswer;
     boolean isSelected;
     private Button selectedButton = null;
+    RequestQueue queue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,9 +54,12 @@ public class QuestionPage extends AppCompatActivity {
 
         binding = QuestionPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
         loadQuestionData();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void initializeUIElements() {
@@ -63,13 +72,6 @@ public class QuestionPage extends AppCompatActivity {
         setAnswerButtonListeners();
     }
 
-        RequestQueue queue;
-        queue = Volley.newRequestQueue(this);
-
-        binding = QuestionPageBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-
     private void loadQuestionData() {
         queue = Volley.newRequestQueue(this);
         Intent fromPrevious = getIntent();
@@ -78,7 +80,7 @@ public class QuestionPage extends AppCompatActivity {
         String url;
         try {
             url = "https://opentdb.com/api.php?amount=" + URLEncoder.encode(String.valueOf(questionNumber), "UTF-8")
-                    + "&category="+ URLEncoder.encode("","UTF-8") +"&type=multiple";
+                    + "&category=" + URLEncoder.encode("", "UTF-8") + "&type=multiple";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -98,12 +100,11 @@ public class QuestionPage extends AppCompatActivity {
 
     }
 
-    private String formatHtml(String JsonText){
-        JsonText = HtmlCompat.fromHtml(JsonText,HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
+    private String formatHtml(String JsonText) {
+        JsonText = HtmlCompat.fromHtml(JsonText, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
         return JsonText;
     }
 
-    @SuppressLint("SetTextI18n")
     private void loadQuestionData(JSONArray triviaQuiz) throws JSONException {
         initializeUIElements();
         answers.clear(); // Clear the previous answers
@@ -145,9 +146,7 @@ public class QuestionPage extends AppCompatActivity {
         }
     }
 
-
-
-    private void resetButton(){
+    private void resetButton() {
         for (Button btn : answers) {
             btn.setBackgroundColor(getColor(R.color.purple_500));
         }
@@ -156,7 +155,6 @@ public class QuestionPage extends AppCompatActivity {
     private void checkAnswer(String selectedAnswer) {
         if (selectedAnswer.equals(correctAnswer)) {
             score++;
-        } else {
         }
     }
 
@@ -176,14 +174,59 @@ public class QuestionPage extends AppCompatActivity {
         resetButton();
     }
 
+    private int calculateScore() {
+        int calculatedScore = 0;
+
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getText().toString().equals(correctAnswer)) {
+                calculatedScore++;
+            }
+        }
+        return calculatedScore;
+    }
+
+    private void saveScore(int calculatedScore) {
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("score", calculatedScore);
+        editor.apply();
+    }
+
     private void submitAnswers(View view) {
         Intent nextPage = new Intent(QuestionPage.this, SubmissionPage.class);
         SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("questionNumber", questionNumber);
-        editor.putInt("score",score);
         editor.apply();
-        nextPage.putExtra("score",score);
+
+        int calculatedScore = calculateScore();
+        saveScore(calculatedScore);
+
+        nextPage.putExtra("score", score);
         startActivity(nextPage);
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.Help) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Instructions");
+            builder.setMessage(R.string.helpmessage);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (item.getItemId() == R.id.Home) {
+            Intent HomeIntent = new Intent(QuestionPage.this, MainActivity.class);
+            startActivity(HomeIntent);
+        } else if (item.getItemId() == R.id.Delete) {
+            Snackbar.make(binding.getRoot(), "Item Deleted", Snackbar.LENGTH_SHORT).show();
+        }
+        return true;
     }
 }
